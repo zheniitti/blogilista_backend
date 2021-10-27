@@ -1,5 +1,108 @@
 const listHelper = require('../utils/list_helper')
 
+
+test('dummy returns one', () => {
+    const result = listHelper.dummy(blogs)
+    expect(result).toBe(1)
+})
+
+/*
+tehvävä: 4.4 Toinen tapa suorittaa yksittäinen testi (tai describe-lohko) on määritellä suoritettava
+testi argumentin -t avulla: npm test -- -t 'when list has only one blog, equals the likes of that'
+ */
+describe('total likes', () => {
+    test('of empty list is zero', () => {
+        const result = listHelper.totalLikes([])
+        expect(result).toBe(0)
+    })
+
+    test('when list has only one blog, equals the likes of that', () => {
+        const result = listHelper.totalLikes(listWithOneBlog)
+        expect(result).toBe(5)
+    })
+
+})
+
+
+
+describe('favourite blog', () => {
+
+    test('of empty list is \'none\'', () => {
+        const result = listHelper.favouriteBlog([])
+        expect(result).toBe('none')
+    })
+
+
+    test('of list of only one blog', () => {
+        expect(listHelper.favouriteBlog(listWithOneBlog)).toBe(listWithOneBlog[0])
+    })
+
+
+    test('of list with more than one blog and with only one max blog', () => {
+
+        expect(listHelper.favouriteBlog(blogs)).toMatchObject(
+            {
+
+                "title": blogs[2].title,
+                "author": blogs[2].author,
+                "likes": blogs[2].likes
+            }
+        )
+    })
+
+
+    test('of list with more than one blog and with more than one max blog', () => {
+        const secondMaxBlog = {
+            "title": 'max2',
+            "author": 'Max Maximum',
+            "likes": blogs[2].likes
+        }
+        const testCopy = [...blogs, secondMaxBlog]
+
+        expect(listHelper.favouriteBlog(testCopy)).toContainEqual(secondMaxBlog)
+    })
+
+
+
+
+})
+
+
+describe('Ennätysblogaaja', () => {
+    test('empty list is \'Lista on tyhja.\'', () => {
+        const result = listHelper.mostBlogs([])
+        expect(result).toBe('Lista on tyhjä.')
+    })
+
+
+    test('list of only one blog', () => {
+        expect(listHelper.mostBlogs(listWithOneBlog)).toBe('Edsger W. Dijkstra')
+    })
+
+    test('Ennätysblogaaja.', () => {
+        expect(listHelper.mostBlogs(blogs)).toMatchObject({ author: 'Robert C. Martin', blogs: 3 })
+    })
+
+})
+
+
+describe('Ennätystykkäykset', () => {
+    test('empty list is \'Lista on tyhja.\'', () => {
+        const result = listHelper.mostLikes([])
+        expect(result).toBe('Lista on tyhjä.')
+    })
+
+
+    test('list of only one blog', () => {
+        expect(listHelper.mostLikes(listWithOneBlog)).toMatchObject({ author: 'Edsger W. Dijkstra', likes: 5 })
+    })
+
+    test('Blogaaja jolla eniten tykkäyksiä.', () => {
+        expect(listHelper.mostLikes(blogs)).toMatchObject({ author: 'Edsger W. Dijkstra', likes: 17 })
+    })
+
+})
+
 const blogs = [
     {
         _id: "5a422a851b54a676234d17f7",
@@ -50,6 +153,7 @@ const blogs = [
         __v: 0
     }
 ]
+
 const listWithOneBlog = [
     {
         _id: '5a422aa71b54a676234d17f8',
@@ -60,70 +164,3 @@ const listWithOneBlog = [
         __v: 0
     }
 ]
-test('dummy returns one', () => {
-    const result = listHelper.dummy(blogs)
-    expect(result).toBe(1)
-})
-
-/* 
-Toinen tapa suorittaa yksittäinen testi (tai describe-lohko) on määritellä suoritettava testi 
-argumentin -t avulla:
-npm test -- -t 'when list has only one blog, equals the likes of that'
- */
-describe('total likes', () => {
-
-    test('of empty list is zero', () => {
-        const result = listHelper.totalLikes([])
-        expect(result).toBe(0)
-    })
-
-
-    test('when list has only one blog, equals the likes of that', () => {
-        const result = listHelper.totalLikes(listWithOneBlog)
-        expect(result).toBe(5)
-    })
-
-})
-
-
-describe('favourite blog', () => {
-
-    test('of empty list is \'none\'', () => {
-        const result = listHelper.favouriteBlog([])
-        expect(result).toBe('none')
-    })
-
-
-    test('of list of only one blog', () => {
-        expect(listHelper.favouriteBlog(listWithOneBlog)).toBe(listWithOneBlog[0])
-    })
-
-
-    test('of list with more than one blog and with only one max blog', () => {
-        console.log(blogs[2]);
-
-        expect(listHelper.favouriteBlog(blogs)).toMatchObject(
-            {
-                "title": blogs[2].title,
-                "author": blogs[2].author,
-                "likes": blogs[2].likes
-            }
-        )
-    })
-
-
-    test('of list with more than one blog and with more than one max blog', () => {
-        const secondMaxBlog = {
-            "title": 'max2',
-            "author": 'Max Maximum',
-            "likes": blogs[2].likes
-        }
-        const testCopy = [...blogs, secondMaxBlog]
-
-        expect(listHelper.favouriteBlog(testCopy)).toContainEqual(secondMaxBlog)
-    })
-
-
-
-
-})
